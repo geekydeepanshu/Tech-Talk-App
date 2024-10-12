@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {useForm} from "react-hook-form";
 import {Button, Input} from "./index"
+import { Link } from "react-router-dom";
 
 
 
@@ -14,12 +15,12 @@ function Signup() {
             <div className="mx-auto w-full max-w-lg bg-gray-100 rounded-xl  p-10 border border-black/10">
                 <h2 className="text-center text-2xl font-bold leading-tight">Sign up to create account</h2>
                 <p className="mt-2 text-center text-base text-black/60">Already have an Account? &nbsp;
-                    <a
-                        href="/signup"
+                    <Link
+                        to="/login"
                         className="font-medium text-primary transition-all duration-200 hover:underline">Login
-                    </a>
+                    </Link>
                 </p>
-                {error && (<p className="text-red-600 mt-8 text-center">{error}</p>)}
+              {error && (<p className="text-red-600 mt-8 text-center">{error}</p>)}
                 <form onSubmit={handleSubmit(signup)}>
                     <Input
                      label="Name: "
@@ -58,7 +59,7 @@ function Signup() {
                       type="submit"
                       className="my-6 w-2/3 block bg-violet-600 text-white mx-auto"
                       >
-                        Signin
+                        Signup
                      </Button> 
                 </form>
 
