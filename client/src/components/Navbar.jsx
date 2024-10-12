@@ -34,10 +34,10 @@ export default function Navbar() {
   return (
     
     <header>
-      {/* <Container> */}
+      
       <div className={`h-12 flex flex-row  m-0 py-2 px-3 text-black shadow items-center box-border bg-slate-300`}>
-        <NavLink to="/"><p className=" text-2xl font-medium">Blog App</p></NavLink>
-        <div className="absolute right-0 mx-4   ">
+        {/* <NavLink to={""}><p className=" text-2xl font-medium">Blog App</p></NavLink> */}
+        {/* <div className="absolute right-0 mx-4   ">
           {navItems.map((item)=>(
               item.isEnabled?(
              <NavLink to={item.path} key={item.name} className={({ isActive }) => `${isActive ? "text-orange-500" : ""} mx-4 `} ><span className="text-md font-medium hover:text-orange-500 ">{item.name}</span></NavLink>):(null)
@@ -48,9 +48,8 @@ export default function Navbar() {
           )
          } */}
           
-        </div>
-      </div>
-      {/* </Container> */}
+        {/* </div> */}
+      </div> 
     </header>
   )
 }

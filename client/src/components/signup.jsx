@@ -2,6 +2,7 @@ import { useState } from "react";
 import {useForm} from "react-hook-form";
 import {Button, Input} from "./index"
 import { Link } from "react-router-dom";
+import services from "../services/services.js";
 
 
 
@@ -9,7 +10,10 @@ function Signup() {
 
     const [error, setError] = useState("");
     const {register, handleSubmit} = useForm();
-    const signup = (data)=>console.log(data)
+    const signup = async(data)=>{
+        const userAccount =  await services.createAccount(data);
+        console.log(userAccount)
+    }
     return (
         <div className="flex items-center justify-center py-16">
             <div className="mx-auto w-full max-w-lg bg-gray-100 rounded-xl  p-10 border border-black/10">

@@ -3,10 +3,15 @@ import axios from "axios";
 class Service{
     async createAccount({name, email, password}){
         try {
-           const userAccount =  await axios.post()
-           if(userAccount){
-            return this.login({email, password})
-           } 
+           const userAccount =  await axios.post("http://localhost:5005/api/v1/users/register",{
+            username:name,
+            email,
+            password
+           })
+           console.log(userAccount)
+        //    if(userAccount){
+        //     return this.login({email, password})
+        //    } 
         } catch (error) {
             throw error
         }
