@@ -1,13 +1,8 @@
 import { Outlet } from "react-router-dom";
-import { Navbar,Footer } from "./components";
+import "react-toastify/dist/ReactToastify.css";
 
 function App(){
 return(
-<>
-<Navbar/>
-  <Outlet/>
-<Footer/>
-</>
-)
-}
+    <Outlet/>
+  )}
 export default App;
