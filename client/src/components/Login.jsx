@@ -17,10 +17,12 @@ function Login() {
     const login = async(data) => {
         try{
              const session =  await services.login(data);
-             if(session){
+             if(session.status==200){
+                console.log(session)
              dispatch(authLogin(session.data))
-             console.log("Login::session: ",session);
+            //  console.log("Login::session: ",session);
              toast.success("Hello!"); // toast not visible to user
+             alert("Login Succesfull!")
              navigate("/")
         }
         }catch(error){

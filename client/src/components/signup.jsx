@@ -18,7 +18,7 @@ function Signup() {
     const signup = async(data)=>{
         try {
              const session =  await services.createAccount(data);
-             console.log("Signup::session",session)
+            //  console.log("Signup::session",session)
             if(session.status==200){
                 
                 dispatch(authLogin(session.data))

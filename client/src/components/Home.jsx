@@ -2,9 +2,10 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 function Home(){
-    const userData = useSelector((state)=>state.auth)
-    console.log(userData)
-    const isLoggedIn = useSelector((state)=>state.auth.isLoggedIn);
+    const theme = useSelector((state)=>state.theme.mode)
+    console.log("Home::state:",theme)
+    const isLoggedIn = useSelector((state)=>state.auth.isLoggedIn)
+    console.log("Home::isLoggedIn:",isLoggedIn)
  return(
     <>
        {
