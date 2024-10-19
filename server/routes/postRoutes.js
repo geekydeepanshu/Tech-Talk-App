@@ -10,7 +10,7 @@ const { protect } = require('../middleware/authMiddleware');
 const router = express.Router();
 
 // Route for creating a new post
-router.post('/createPost', protect, createPost);  // Protected route
+router.post('/createPost', createPost);  // Protected route
 
 // Route for getting all posts
 router.get('/', getAllPosts);

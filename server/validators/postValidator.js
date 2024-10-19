@@ -14,7 +14,7 @@ const postSchema = Joi.object({
     description: Joi.string().min(10).max(5000).required().messages({
         'string.empty': 'Description is required',
         'string.min': 'Description must be at least 10 characters long',
-        'string.max': 'Description cannot exceed 1000 characters'
+        'string.max': 'Description cannot exceed 5000 characters'
     }),
 });
 
