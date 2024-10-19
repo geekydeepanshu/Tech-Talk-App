@@ -6,6 +6,7 @@ const express = require('express');
 const morgan = require('morgan');
 const winston = require('./utils/logger');
 const routes = require('./routes/index');
+const cors = require('cors');
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -16,6 +17,9 @@ connectDB();
 
 // Middleware to parse JSON
 app.use(express.json());
+
+// CORS
+app.use(cors({}))
 
 // HTTP request logging
 app.use(morgan('combined'));

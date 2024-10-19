@@ -1,13 +1,19 @@
 import { Outlet } from "react-router-dom";
-import { Navbar,Footer } from "./components";
+import "react-toastify/dist/ReactToastify.css";
+import 'react-quill/dist/quill.snow.css';
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function App(){
+const theme = useSelector((state)=>state.theme.mode)
+const htmlElement = document.querySelector("html");
+
+
+useEffect(()=>{
+  htmlElement.className=theme;
+  },[theme])
+
 return(
-<>
-<Navbar/>
-  <Outlet/>
-<Footer/>
-</>
-)
-}
+    <Outlet/>
+  )}
 export default App;

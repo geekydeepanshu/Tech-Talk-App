@@ -10,7 +10,7 @@ import React,{ useId } from "react";
     const id = useId();
     return (
         <>
-            {label&&(<label className="inline-block mb-1 pl-1" htmlFor={id} >{label}</label>)}
+            {label&&(<label className="block text-sm font-medium text-gray-700 dark:text-gray-300" htmlFor={id} >{label}</label>)}
             <input
                 type={type}
                 id={id}
