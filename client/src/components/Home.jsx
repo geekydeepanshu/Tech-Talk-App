@@ -1,16 +1,21 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import {HomeX, Input} from "./index.js";
 
 function Home(){
     const theme = useSelector((state)=>state.theme.mode)
     console.log("Home::state:",theme)
     const isLoggedIn = useSelector((state)=>state.auth.isLoggedIn)
     console.log("Home::isLoggedIn:",isLoggedIn)
+    const searchHandler =()=> {
+        console.log("search handler");
+        // functionality for seach
+    }
  return(
     <>
        {
         isLoggedIn?
-        (<></>):(
+        (<HomeX/>):(
             <div className="bg-gradient-to-b from-green-400 to-white">
             <div className="flex flex-col items-center justify-center text-center pt-24 gap-4 h-[calc(100vh-4rem)] px-4 dark:bg-gray-900">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-semibold text-gray-900 dark:text-gray-100"> Where Tech Enthusiasts unite 🚀<span className="font-semibold"></span></h1>

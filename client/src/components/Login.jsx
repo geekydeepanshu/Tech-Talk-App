@@ -22,12 +22,12 @@ function Login() {
              dispatch(authLogin(session.data))
             //  console.log("Login::session: ",session);
              toast.success("Hello!"); // toast not visible to user
-             alert("Login Succesfull!")
+            //  alert("Login Succesfull!")
              navigate("/")
         }
         }catch(error){
             console.log("Login:: catch-error:",error)
-            toast.error(error.message);
+            toast.error(error.message || "Check Email or Password");
         }
        
     }

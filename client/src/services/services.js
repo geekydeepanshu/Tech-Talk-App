@@ -1,7 +1,9 @@
 import axios from "axios";
 
 class Service{
+    
     token = null;
+    
     async createAccount({name, email, password}){
         try {
            const userAccount =  await axios.post("http://localhost:5005/api/v1/users/register",{
@@ -73,12 +75,15 @@ class Service{
             throw error;
         }
     }
-    async uploadFile(){
-        try {
-            return await axios.post()
-        } catch (error) {
-            throw error;
-        }
+    async uploadFile(file){
+        
+        // return await cloudinary.uploader
+        // .upload(
+        //     file,
+        // )
+        // .catch((error) => {
+        //     console.log(error);
+        // });
     }
     async deleteFile(){
         try {
