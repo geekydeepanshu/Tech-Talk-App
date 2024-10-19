@@ -1,6 +1,5 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 const generateToken = require('../utils/generateToken');
 
@@ -33,7 +32,7 @@ const registerUser = async (username, email, password) => {
 
 // Login a user
 const loginUser = asyncHandler(async (username, email, password) => {
-    const user = await User.findOne({$or: [{email: email},{username: username}]});
+    const user = await User.findOne({ $or: [{ email: email }, { username: username }] });
     if (user && (await bcrypt.compare(password, user.password))) {
         // Generate a JWT token
         const token = generateToken(user._id);
@@ -52,8 +51,57 @@ const getUserById = asyncHandler(async (userId) => {
     return user;
 });
 
+// Get all users
+const getAllUsers = asyncHandler(async () => {
+    const users = await User.find().select('-password'); // Exclude password field
+    return users;
+});
+
+// Update a user by ID
+const updateUser = asyncHandler(async (userId, updateData) => {
+    const user = await User.findById(userId);
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    // Update fields if they exist in the updateData
+    if (updateData.username) user.username = updateData.username;
+    if (updateData.email) user.email = updateData.email;
+
+    // If password needs to be updated, hash the new password
+    if (updateData.password) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(updateData.password, salt);
+    }
+
+    const updatedUser = await user.save();
+
+    // Return updated user details
+    return {
+        _id: updatedUser._id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+    };
+});
+
+// Delete a user by ID
+const deleteUser = asyncHandler(async (userId) => {
+    const user = await User.findByIdAndDelete(userId);
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    // Return the deleted user (optional, you can just return success message if needed)
+    return user;
+});
+
 module.exports = {
     registerUser,
     loginUser,
     getUserById,
+    getAllUsers,
+    updateUser,
+    deleteUser
 };
