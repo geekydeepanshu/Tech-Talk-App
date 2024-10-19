@@ -8,8 +8,8 @@ import axios from "axios";
 function CreatePost() {
 
     const [image, setImage] = useState(null);
-    const [imageUrl, setImageUrl] = useState("");
-    const uploadHandler = async () => {
+    const [quillData, setQuillData] = useState();
+    const uploadHandler = async (image) => {
         const formData = new FormData();
         formData.append('file', image);
         formData.append('upload_preset', 'preset_image'); // Add your upload preset
@@ -20,15 +20,30 @@ function CreatePost() {
                 'https://api.cloudinary.com/v1_1/ds2tgx0bn/image/upload',
                 formData
             );
-            setImageUrl(response.data.url); // Get the image URL from the response
-            console.log(response.data.url)
+            return (response.data.url); // Get the image URL from the response
         } catch (error) {
             console.error("Error uploading the image: ", error);
         }
     };
     const { register, handleSubmit } = useForm();
-    const onSubmit = (data) => {
-        console.log("CreatePost::form-data:", data);
+    const onSubmit = async (data) => {
+        console.log("form post data", data);
+        
+        let imageUrl= await uploadHandler(image);
+        console.log("image url", imageUrl);
+        try {
+
+            console.log("hitting backend");
+            const response = await services.createPost({
+                title: data.title,
+                image: imageUrl,
+                description: quillData
+            })
+            console.log("response ", response);
+            // return (response.data.url); // Get the image URL from the response
+        } catch (error) {
+            console.error("Error uploading the image: ", error);
+        }
     }
     return (
         <div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex items-center justify-center py-10 pt-20">
@@ -62,8 +77,8 @@ function CreatePost() {
                 </div>
                 <div className="mb-20">
                     <label htmlFor="content-box" className="block text-sm font-bold mb-2">Content</label>
-                    <ReactQuill id="content-box" theme="snow" className="rounded w-full py-2 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200" preserveWhitespace={false}
-                        {...register("content")} style={{ height: "200px" }} />
+                    <ReactQuill id="content-box" theme="snow" className="rounded w-full py-2 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200"
+                        value={quillData}  onChange={setQuillData} style={{ height: "200px" }} />
                 </div>
                 <div className="flex justify-center mt-6">
                     <Button

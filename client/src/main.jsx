@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { Provider, useSelector } from "react-redux"
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Login, Signup, Home, Profile} from './pages/index.js';
-import {CreatePost} from "./components/"
+import {CreatePost, PostContainer} from "./components/"
 import {store, persistor } from "./store/store.js"
 import { PersistGate } from 'redux-persist/integration/react'
 import App from './App.jsx'
@@ -36,6 +36,10 @@ const router = createBrowserRouter([
       {
         path:"/create",
         element:<CreatePost/>
+      },
+      {
+        path:"/post/:postid",
+        element:<PostContainer/>
       }
     ]
   }

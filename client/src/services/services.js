@@ -47,6 +47,16 @@ class Service{
             throw error;
         }
     }
+    async createPost(data){
+        try{
+            return axios.post("http://localhost:5005/api/v1/posts/createPost",{
+                data
+            });
+        }catch(error)
+        {
+            throw error;
+        }
+    }
     async getPosts({}){
         try {
             return await axios.get();
