@@ -7,7 +7,7 @@ const postSchema = Joi.object({
         'string.min': 'Title must be at least 5 characters long',
         'string.max': 'Title cannot exceed 100 characters'
     }),
-    image: Joi.string().pattern(/^https?:\/\/.*\.(jpeg|jpg|png|gif)$/).required().messages({
+    image: Joi.string().required().messages({
         'string.empty': 'Image URL is required',
         'string.pattern.base': 'Image must be a valid URL pointing to a jpg, png, or gif file'
     }),
