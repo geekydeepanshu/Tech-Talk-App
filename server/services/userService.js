@@ -32,8 +32,8 @@ const registerUser = async (username, email, password) => {
 };
 
 // Login a user
-const loginUser = asyncHandler(async (email, password) => {
-    const user = await User.findOne({ email });
+const loginUser = asyncHandler(async (username, email, password) => {
+    const user = await User.findOne({$or: [{email: email},{username: username}]});
     if (user && (await bcrypt.compare(password, user.password))) {
         // Generate a JWT token
         const token = generateToken(user._id);

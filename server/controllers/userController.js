@@ -3,9 +3,9 @@ const asyncHandler = require('express-async-handler');
 
 // Controller for registering a new user
 const register = asyncHandler(async (req, res) => {
-    const { username, email, password } = req.body;
+    const { first_name, last_name, username, email, password } = req.body;
     try {
-        const user = await registerUser(username, email, password);
+        const user = await registerUser(username, email, password, first_name, last_name);
         res.status(201).json({ message: 'User registered successfully', user });
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -14,9 +14,9 @@ const register = asyncHandler(async (req, res) => {
 
 // Controller for logging in a user
 const login = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
+    const { username, email, password } = req.body;
     try {
-        const { user, token } = await loginUser(email, password);
+        const { user, token } = await loginUser(username, email, password);
         res.json({ token, user: { id: user._id, username: user.username, email: user.email } });
     } catch (error) {
         res.status(401).json({ message: error.message });
