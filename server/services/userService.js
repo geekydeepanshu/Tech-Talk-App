@@ -4,15 +4,17 @@ const asyncHandler = require('express-async-handler');
 const generateToken = require('../utils/generateToken');
 
 // Register a new user
-const registerUser = async (username, email, password) => {
+const registerUser = async ({first_name,last_name,username,email,password}) => {
     // Check if user already exists
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({$or: [{ email  },{username}]});
     if (userExists) {
         throw new Error('User already exists');
     }
 
     // Create a new user and save it to the database
     const user = new User({
+        first_name,
+        last_name,
         username,
         email,
         password
@@ -20,12 +22,13 @@ const registerUser = async (username, email, password) => {
 
     // Save the user
     const savedUser = await user.save();
-
     // Return user data along with generated token
     return {
-        _id: savedUser._id,
-        username: savedUser.username,
-        email: savedUser.email,
+        user_id:savedUser._id,
+        first_name:savedUser.first_name,
+        last_name:savedUser.last_name,
+        username:savedUser.username,
+        email:savedUser.email,
         token: generateToken(savedUser._id), // Generate JWT token
     };
 };

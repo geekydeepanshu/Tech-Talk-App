@@ -17,14 +17,15 @@ function Login() {
     const login = async(data) => {
         try{
              const session =  await services.login(data);
-             if(session.status==200){
-                console.log(session)
-             dispatch(authLogin(session.data))
-            //  console.log("Login::session: ",session);
-             toast.success("Hello!"); // toast not visible to user
-            //  alert("Login Succesfull!")
-             navigate("/")
-        }
+             console.log(session);
+            //  if(session.status==200){
+            //     console.log(session)
+            //  dispatch(authLogin(session.data))
+            // //  console.log("Login::session: ",session);
+            //  toast.success("Hello!"); // toast not visible to user
+            // //  alert("Login Succesfull!")
+            //  navigate("/")
+        // }
         }catch(error){
             console.log("Login:: catch-error:",error)
             toast.error(error.message || "Check Email or Password");

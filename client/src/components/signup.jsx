@@ -18,13 +18,14 @@ function Signup() {
     const signup = async(data)=>{
         try {
              const session =  await services.createAccount(data);
+             console.log(session);
             //  console.log("Signup::session",session)
-            if(session.status==200){
+            // if(session.status==200){
                 
-                dispatch(authLogin(session.data))
-                toast.success("user registered succesfully!")
-                navigate("/")
-        }
+            //     dispatch(authLogin(session.data))
+            //     toast.success("user registered succesfully!")
+            //     navigate("/")
+        // }
         } catch (error) {
             toast.error(error.message)
         }
