@@ -16,7 +16,35 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Description is required'],
         minlength: [10, 'Description must be at least 10 characters long'],
-        maxlength: [1000, 'Description cannot be more than 1000 characters'],
+        maxlength: [10000, 'Description cannot be more than 1000 characters'],
+    },
+    total_likes: {
+        type: Number,
+        default: 0, // Initialize with 0
+    },
+    comments: [
+        {
+            user_id: {
+                type: mongoose.Schema.Types.ObjectId, // Reference to the User model
+                ref: 'User', // Assuming you have a User model
+                required: true,
+            },
+            comment: {
+                type: String,
+                required: [true, 'Comment cannot be empty'],
+                minlength: [1, 'Comment must be at least 1 character long'],
+                maxlength: [1000, 'Comment cannot exceed 1000 characters'],
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now, // Timestamp for each comment
+            },
+        },
+    ],
+    author: {
+        type: mongoose.Schema.Types.ObjectId, // Reference to the User model
+        ref: 'User', // Assuming you have a User model
+        required: [true, 'Author is required'],
     },
 });
 
