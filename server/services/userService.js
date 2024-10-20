@@ -6,9 +6,13 @@ const generateToken = require('../utils/generateToken');
 // Register a new user
 const registerUser = async ({first_name,last_name,username,email,password}) => {
     // Check if user already exists
-    const userExists = await User.findOne({$or: [{ email  },{username}]});
-    if (userExists) {
-        throw new Error('User already exists');
+    const isUserEmailExists = await User.findOne({email});
+    if (isUserEmailExists) {
+        throw new Error('User Email already exists');
+    }
+    const isUsernameExists = await User.findOne({username});
+    if (isUsernameExists) {
+        throw new Error('Username already exists');
     }
 
     // Create a new user and save it to the database
