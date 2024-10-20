@@ -7,7 +7,7 @@ const postValidator = require('../validators/postValidator');
 // Controller for creating a new post
 const createPost = asyncHandler(async (req, res) => {
     // Validate request body using Joi
-    const { error, value } = postValidator.validate(req.body.data);
+    const { error, value } = postValidator.validate(req.body);
     if (error) {
         return res.status(400).json({ message: error.details[0].message });
     }

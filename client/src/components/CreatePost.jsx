@@ -4,9 +4,12 @@ import ReactQuill from 'react-quill';
 import services from "../services/services";
 import { useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function CreatePost() {
-
+    const user = useSelector((state)=>state.auth.userData);
+    const navigate = useNavigate();
     const [image, setImage] = useState(null);
     const [quillData, setQuillData] = useState();
     const uploadHandler = async (image) => {
@@ -27,20 +30,21 @@ function CreatePost() {
     };
     const { register, handleSubmit } = useForm();
     const onSubmit = async (data) => {
-        console.log("form post data", data);
         
+         console.log("CreatePost::user:",user)
         let imageUrl= await uploadHandler(image);
-        console.log("image url", imageUrl);
         try {
 
-            console.log("hitting backend");
             const response = await services.createPost({
                 title: data.title,
                 image: imageUrl,
-                description: quillData
-            })
-            console.log("response ", response);
-            // return (response.data.url); // Get the image URL from the response
+                description: quillData,
+                total_likes:0,
+                comments:[],
+                author: user.user_id
+            },user.token)
+            console.log(response)
+            navigate(`/post/${response.data.post._id}`)
         } catch (error) {
             console.error("Error uploading the image: ", error);
         }
@@ -70,10 +74,6 @@ function CreatePost() {
                         className="rounded w-full py-2 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200"
                         onChange={(event) => setImage(event.target.files[0])}
                     />
-                    <Button
-                        onClick={uploadHandler}
-                        className="mt-2 py-2 px-6 rounded font-bold  bg-gray-500 dark:bg-gray-700 text-white hover:bg-gray-600 dark:hover:bg-gray-800"
-                    >Upload</Button>
                 </div>
                 <div className="mb-20">
                     <label htmlFor="content-box" className="block text-sm font-bold mb-2">Content</label>

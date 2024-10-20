@@ -1,7 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {Button} from "./index"
+import services from "../services/services";
+import { useEffect, useState } from "react";
+import parse from "html-react-parser";
 
 function PostContainer(){
+    const [post, setPost] = useState()
+    const {postid} = useParams();
+    useEffect(()=>{
+        getPost();
+    },[])
+
+    const getPost = async()=>{
+        const post = await services.getPost(postid)
+        setPost(post)
+    }
+    
     const comments = [];
     const otherposts = [];
     return(
@@ -9,14 +23,14 @@ function PostContainer(){
         <main className="w-full max-w-3xl mx-auto">
             <div className="w-full h-64 sm:h-80 md:h-96 lg:h-[25.5rem] overflow-hidden">
                 <img 
-                 src={"https://res.cloudinary.com/dwqu6dpab/image/upload/v1726481695/blog-headers/hoezjhasvwndqispfdiy.jpg"} 
+                 src={post ?post.image: "https://res.cloudinary.com/dwqu6dpab/image/upload/v1726481695/blog-headers/hoezjhasvwndqispfdiy.jpg"} 
                  alt="Blog Header" 
                  className="w-full h-full object-cover"
                  />
             </div>
             <article className="py-6">
                 <h2 className="text-4xl font-bold text-gray-800 dark:text-white">
-                    {"title"}
+                    {post? post.title: "title"}
                 </h2>
                 <div className="flex items-center mt-4">
                     <img 
@@ -43,7 +57,7 @@ function PostContainer(){
                     </p>
                 </div>
                 <div className="mt-6 text-gray-700 dark:text-gray-300 space-y-6">
-                    {"content"}
+                   {parse(post?post.description:"content")}
                 </div>
                 <div className="mt-6">
                         <div >

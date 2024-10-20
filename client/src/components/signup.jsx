@@ -17,16 +17,21 @@ function Signup() {
     const {register, handleSubmit} = useForm();
     const signup = async(data)=>{
         try {
-             const session =  await services.createAccount(data);
-             console.log(session);
-            //  console.log("Signup::session",session)
-            // if(session.status==200){
-                
-            //     dispatch(authLogin(session.data))
-            //     toast.success("user registered succesfully!")
-            //     navigate("/")
-        // }
+            console.log("Signup::form-data:",data);
+             const response =  await services.createAccount(data);
+            if(response.request.status==201){
+                console.log(response)
+                dispatch(authLogin(response.data.user))
+                toast.success(response.data.message)
+                     navigate("/")
+            }
+            else{
+                toast.error("Error!");
+            }    
+            
+        
         } catch (error) {
+            console.log(error);
             toast.error(error.message)
         }
        
@@ -47,12 +52,33 @@ function Signup() {
               {/* {error && (<p className="text-red-600 mt-8 text-center">{error}</p>)} */}
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit(signup)}>
                     <div className="mb-8 space-y-4">
-                        <div><Input
-                     label="Name*"
+                    <div className="flex flex-row justify-between content-center">
+                        <div className="w-2/5"><Input
+                     label="First Name*"
+                     type="text"
+                     placeholder="Enter your first name"
+                     className="appearance-none mt-2 relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                     {...register("fName",{
+                        required:true
+                     })}
+                     />
+                     </div>
+                     <div className="w-2/5">
+                      <Input
+                     label="Last Name"
+                     type="text"
+                     placeholder="Enter your last name"
+                     className="appearance-none mt-2 relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                     {...register("lName")}
+                     /></div>
+                     </div>
+                    <div>
+                        <Input
+                     label="Username*"
                      type="text"
                      placeholder="Enter your name"
                      className="appearance-none mt-2 relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                     {...register("name",{
+                     {...register("username",{
                         required:true
                      })}
                      /></div>

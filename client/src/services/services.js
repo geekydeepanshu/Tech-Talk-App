@@ -1,29 +1,24 @@
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 class Service{
     
-    token = null;
-    
-    async createAccount({name, email, password}){
+    async createAccount({fName,lName,username, email, password}){
         try {
-           const userAccount =  await axios.post("http://localhost:5005/api/v1/users/register",{
-            username:name,
+           return await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/register`,{
+            first_name:fName,
+            last_name:lName,
+            username,
             email,
             password
            })
-           if(userAccount)
-                return this.login({email, password})
-           
         } catch (error) {
             throw error
         }
     }
-    async login({email, password}){
+    async login(data){
         try{
-            return await axios.post("http://localhost:5005/api/v1/users/login",{
-                email,
-                password
-            });
+            return await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/login`,data);
 
         } catch(error) {
             throw error;
@@ -31,7 +26,7 @@ class Service{
     }
     async getUser({userId}){
         try {
-            return await axios.get("http://localhost:5005/api/v1/users/profile",{
+            return await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/profile`,{
                 headers:{
                     'Authorization':`Bearer ${token}`
                 }
@@ -47,26 +42,31 @@ class Service{
             throw error;
         }
     }
-    async createPost(data){
+    async createPost(data,token){
+        console.log("CreatePostService::data",data,"\n","token:",token);
         try{
-            return axios.post("http://localhost:5005/api/v1/posts/createPost",{
-                data
+            return axios.post(`${import.meta.env.VITE_BACKEND_URL}/posts/createPost`,data,{
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
             });
         }catch(error)
         {
             throw error;
         }
     }
-    async getPosts({}){
+    async getPosts(){
         try {
-            return await axios.get();
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/posts`);
+            return response.data.posts;
         } catch (error) {
             throw error;
         }
     }
-    async getPost(){
+    async getPost(postId){
         try{
-            return await axios.get();
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/posts/${postId}`);
+            return response.data.post;
         } catch(error) {
             throw error;
         }

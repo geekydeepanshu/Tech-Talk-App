@@ -25,8 +25,8 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     try {
-        const { email, password } = value;
-        const user = await userService.loginUser(email, password);
+        // const { email, password } = value;
+        const user = await userService.loginUser(value);
         res.status(200).json({ message: 'Login successful', user });
     } catch (err) {
         res.status(401).json({ message: err.message });

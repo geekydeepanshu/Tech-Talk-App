@@ -15,7 +15,7 @@ function PostPreviewCard(
     }
 ){
 return(
-    <Link to={`/posts/${id}`}>
+    <Link to={`/post/${id}`}>
         <div className="mb-6 py-6 border-b border-gray-300">
             <div className="flex items-center gap-2 mb-2">
                     <div className="h-6 w-6 rounded-full bg-black dark:bg-gray-700 overflow-hidden">

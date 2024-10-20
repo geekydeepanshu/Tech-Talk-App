@@ -29,9 +29,13 @@ const registerUserSchema = Joi.object({
 
 // Schema for user login
 const loginUserSchema = Joi.object({
-    email: Joi.string().email().required().messages({
+    email: Joi.string().email().messages({
         'string.empty': 'Email is required',
         'string.email': 'Email must be a valid email address'
+    }),
+    username: Joi.string().min(3).max(30).messages({
+        'string.min': 'Username must be at least 3 characters long',
+        'string.max': 'Username cannot exceed 30 characters'
     }),
     password: Joi.string().min(6).required().messages({
         'string.empty': 'Password is required',

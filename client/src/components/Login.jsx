@@ -6,6 +6,7 @@ import services from "../services/services.js";
 import { useDispatch } from "react-redux";
 import {login as authLogin} from "../store/authSlice.js"
 import { toast, ToastContainer } from "react-toastify";
+import { isEmail } from "../utils/helper.js";
 
 
 
@@ -14,21 +15,28 @@ function Login() {
     const navigate = useNavigate()
     const [error, setError] = useState("");
     const { register, handleSubmit } = useForm();
+    
+
     const login = async(data) => {
         try{
-             const session =  await services.login(data);
-             console.log(session);
-            //  if(session.status==200){
-            //     console.log(session)
-            //  dispatch(authLogin(session.data))
-            // //  console.log("Login::session: ",session);
-            //  toast.success("Hello!"); // toast not visible to user
-            // //  alert("Login Succesfull!")
-            //  navigate("/")
-        // }
+            console.log("Login::data1",data);
+            
+            if(isEmail(data.username)){
+                data['email']= data.username
+                delete data['username']
+            }
+            console.log("Login::data2",data);
+            
+
+             const response =  await services.login(data);
+             console.log(response);
+             if(response.status==200){
+              dispatch(authLogin(response.data.user))
+             toast.success(response.data.message); // toast not visible to user
+             navigate("/")
+        }
         }catch(error){
-            console.log("Login:: catch-error:",error)
-            toast.error(error.message || "Check Email or Password");
+            toast.error(error.message)
         }
        
     }
@@ -51,14 +59,12 @@ function Login() {
                     <div className="space-y-4">
                         <div>
                         <Input
-                        label="Email: "
-                        type="email"
-                        placeholder="Enter your email..."
+                        label="Username or Email:"
+                        type="text"
+                        placeholder="Enter email or username"
                         className="appearance-none mt-2 relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                        {...register("email", {
-                            required: true, validate: {
-                                matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || "Email Address must be a valid address!",
-                            }
+                        {...register("username", {
+                            required: true, 
                         })}
                     />
                         </div>

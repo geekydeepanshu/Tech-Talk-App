@@ -1,7 +1,20 @@
+import { useState,useEffect } from "react";
 import { SideBarList, Input } from "./index";
 import { PostPreviewCard } from "./index";
+import services from "../services/services";
+
 
 function HomeX() {
+    const [posts, setPosts] = useState([]);
+    useEffect(()=>{
+        getPost();
+    },[])
+
+    const getPost = async()=>{
+        const allPosts = await services.getPosts()
+        setPosts(allPosts)
+    }
+    
     const sidebarData = [
         {
             title: "Featured Post",
@@ -39,37 +52,37 @@ function HomeX() {
         }
     ]
 
-    const posts = [
-        {
-            id: "asfdards5434rewfaq43",
-            author: "Deepanshu Saini",
-            title: "Test Blog",
-            featuredImage: "https://res.cloudinary.com/dwqu6dpab/image/upload/v1727333393/blog-headers/r5pqhuuhvckj73iaydfy.jpg",
-            content: "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. <h1> Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum,</h1> eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. <strong>Ut felis. Praesent dapibus,<strong> neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>",
-            createdAt: Date.now(),
-            commentsCount: 1,
-        },
-        {
-            id: "asfdards5434rewfaq43",
-            author: "Abishek",
-            title: "Random Blog",
-            featuredImage: "https://res.cloudinary.com/dwqu6dpab/image/upload/v1727333393/blog-headers/r5pqhuuhvckj73iaydfy.jpg",
-            content: "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. <h1> Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum,</h1> eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. <strong>Ut felis. Praesent dapibus,<strong> neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>",
-            createdAt: Date.now(),
-            commentsCount: 1,
-        },
+    // const posts = [
+    //     {
+    //         id: "asfdards5434rewfaq43",
+    //         author: "Deepanshu Saini",
+    //         title: "Test Blog",
+    //         featuredImage: "https://res.cloudinary.com/dwqu6dpab/image/upload/v1727333393/blog-headers/r5pqhuuhvckj73iaydfy.jpg",
+    //         content: "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. <h1> Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum,</h1> eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. <strong>Ut felis. Praesent dapibus,<strong> neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>",
+    //         createdAt: Date.now(),
+    //         commentsCount: 1,
+    //     },
+    //     {
+    //         id: "asfdards5434rewfaq43",
+    //         author: "Abishek",
+    //         title: "Random Blog",
+    //         featuredImage: "https://res.cloudinary.com/dwqu6dpab/image/upload/v1727333393/blog-headers/r5pqhuuhvckj73iaydfy.jpg",
+    //         content: "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. <h1> Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum,</h1> eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. <strong>Ut felis. Praesent dapibus,<strong> neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>",
+    //         createdAt: Date.now(),
+    //         commentsCount: 1,
+    //     },
 
-        {
-            id: "asfdards5434rewfaq43",
-            author: "Abishek",
-            title: "Random Blog",
-            featuredImage: "https://res.cloudinary.com/dwqu6dpab/image/upload/v1727333393/blog-headers/r5pqhuuhvckj73iaydfy.jpg",
-            content: "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. <h1> Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum,</h1> eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. <strong>Ut felis. Praesent dapibus,<strong> neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>",
-            createdAt: Date.now(),
-            commentsCount: 1,
-        }
+    //     {
+    //         id: "asfdards5434rewfaq43",
+    //         author: "Abishek",
+    //         title: "Random Blog",
+    //         featuredImage: "https://res.cloudinary.com/dwqu6dpab/image/upload/v1727333393/blog-headers/r5pqhuuhvckj73iaydfy.jpg",
+    //         content: "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. <h1> Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum,</h1> eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. <strong>Ut felis. Praesent dapibus,<strong> neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>",
+    //         createdAt: Date.now(),
+    //         commentsCount: 1,
+    //     }
 
-    ]
+    // ]
     const searchHandler = (data) => console.log(data);
 
     return (
@@ -93,8 +106,8 @@ function HomeX() {
                         onChange={searchHandler} />
                 </div>
                 {
-                    posts.map((post) => (
-                        <PostPreviewCard id={post.id} author={post.author} content={post.content} title={post.title} createdAt={post.createdAt} commentsCount={post.commentsCount} featuredImage={post.featuredImage} />
+                    posts && posts.map((post) => (
+                        <PostPreviewCard id={post._id} author={post.author} content={post.description} title={post.title} createdAt={post.createdAt} commentsCount={post.comments.length} featuredImage={post.image} />
                     ))
                 }
             </div>
