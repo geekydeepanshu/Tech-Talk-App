@@ -6,15 +6,25 @@ import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createPostSchema } from "../validators/postValidator";
 
-function CreatePost() {
+function CreatePostForm() {
     const user = useSelector((state)=>state.auth.userData);
     const navigate = useNavigate();
-    const [image, setImage] = useState(null);
+    // const [image, setImage] = useState(null);
     const [quillData, setQuillData] = useState();
-    const uploadHandler = async (image) => {
+    const { register, handleSubmit, getValues, setValue, control, formState:{errors} } = useForm({
+        resolver:zodResolver(createPostSchema),
+        defaultValues:{
+            title:"",
+            image:"",
+            cotent:""
+        }
+    });
+    const uploadHandler = async () => {
         const formData = new FormData();
-        formData.append('file', image);
+        formData.append('file', data.image[0]);
         formData.append('upload_preset', 'preset_image'); // Add your upload preset
         formData.append('cloud_name', 'ds2tgx0bn'); // Add your cloud name
 
@@ -28,8 +38,12 @@ function CreatePost() {
             console.error("Error uploading the image: ", error);
         }
     };
-    const { register, handleSubmit } = useForm();
+    
+    // console.log("CreatePostForm::data:",data,"\ntype:", typeof data.image[0]);
+
+    
     const onSubmit = async (data) => {
+        console.log("CreatePostForm::data:",data,"\ntype:", typeof data.image[0]);
         
          console.log("CreatePost::user:",user)
         let imageUrl= await uploadHandler(image);
@@ -62,8 +76,9 @@ function CreatePost() {
                         type="text"
                         placeholder="Enter the title"
                         className="rounded w-full py-2 outline-none bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200"
-                        {...register("title", { required: true })}
+                        {...register("title")}
                     />
+                    {errors.title && (<p className="text-red-600 text-xs px-1 pt-2 ">{errors.title.message}</p>)}
                 </div>
                 <div className="mb-4">
                     <label htmlFor="image" className="block text-sm font-bold mb-2">Header Image</label>
@@ -72,13 +87,23 @@ function CreatePost() {
                         type="file"
                         accept="image/png, image/jpg, image/jpeg, image/gif"
                         className="rounded w-full py-2 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200"
-                        onChange={(event) => setImage(event.target.files[0])}
+                        // onChange={(event) => setImage(event.target.files[0])}
+                        {...register("image")}
                     />
+                    {errors.image && (<p className="text-red-600 text-xs px-1 pt-2 ">{errors.image.message}</p>)}
                 </div>
                 <div className="mb-20">
                     <label htmlFor="content-box" className="block text-sm font-bold mb-2">Content</label>
-                    <ReactQuill id="content-box" theme="snow" className="rounded w-full py-2 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200"
-                        value={quillData}  onChange={setQuillData} style={{ height: "200px" }} />
+                    <ReactQuill 
+                     id="content-box" 
+                     theme="snow" 
+                     className="rounded w-full py-2 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200"
+                     value={getValues("content")}
+                     onChange={e=>setValue("content",e.target.value)} 
+                    style={{ height: "200px" }} 
+                    control={control}
+                    />
+                    {errors.content && (<p className="text-red-600 text-xs px-1 pt-2 ">{errors.content.message}</p>)}    
                 </div>
                 <div className="flex justify-center mt-6">
                     <Button
@@ -92,4 +117,4 @@ function CreatePost() {
     )
 }
 
-export default CreatePost;
+export default CreatePostForm;

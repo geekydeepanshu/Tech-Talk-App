@@ -1,11 +1,13 @@
 import { useState } from "react";
 import {useForm} from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
 import {Button, Input} from "./index"
 import { Link, useNavigate } from "react-router-dom";
 import services from "../services/services.js";
 import {login as authLogin} from "../store/authSlice.js"
 import {useSelector,useDispatch} from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
+import { signUpSchema } from "../validators/authValidator.js";
 
 
 
@@ -14,25 +16,22 @@ function Signup() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [error, setError] = useState("");
-    const {register, handleSubmit} = useForm();
+    const {register, handleSubmit,  formState: { errors } } = useForm({
+        resolver: zodResolver(signUpSchema)
+    });
     const signup = async(data)=>{
         try {
-            console.log("Signup::form-data:",data);
              const response =  await services.createAccount(data);
-            if(response.request.status==201){
-                console.log(response)
+            if(response.status==201){
                 dispatch(authLogin(response.data.user))
-                toast.success(response.data.message)
-                     navigate("/")
+                toast.success(response.data.message,{autoClose: 1000,
+                    onClose:()=>navigate("/")
+                })
+                     
             }
-            else{
-                toast.error("Error!");
-            }    
-            
         
         } catch (error) {
-            console.log(error);
-            toast.error(error.message)
+            toast.error(error.response?.data?.message|| "Something went wrong...")
         }
        
        
@@ -41,7 +40,7 @@ function Signup() {
         <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8">
                 <div>
-                <h2 className="text-3xl font-bold text-center text-green-600 dark:text-green-400">Join Tech$Talks</h2>
+                <h2 className="text-3xl font-bold text-center text-green-600 dark:text-green-400">Join <Link to={"/"}className="font-serif font-bold"> Tech Talks</Link></h2>
                 <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-300">Already have an Account? &nbsp;
                     <Link
                         to="/login"
@@ -49,28 +48,30 @@ function Signup() {
                     </Link>
                 </p>
                 </div>
-              {/* {error && (<p className="text-red-600 mt-8 text-center">{error}</p>)} */}
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit(signup)}>
-                    <div className="mb-8 space-y-4">
-                    <div className="flex flex-row justify-between content-center">
-                        <div className="w-2/5"><Input
-                     label="First Name*"
+                    <div className={`mb-8 ${Object.keys(errors).length?"space-y-2":"space-y-4"}`}>
+                    <div className="flex flex-col">
+                        <div className="flex flex-row justify-between">
+                    <div className="w-[48%]">
+                            <Input
+                     label="Name*"
                      type="text"
                      placeholder="Enter your first name"
                      className="appearance-none mt-2 relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                     {...register("fName",{
-                        required:true
-                     })}
+                     {...register("fName")}
                      />
                      </div>
-                     <div className="w-2/5">
-                      <Input
-                     label="Last Name"
+                     <div className="w-[48%] relative">
+                     <Input 
                      type="text"
                      placeholder="Enter your last name"
-                     className="appearance-none mt-2 relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                     className="absolute bottom-0 appearance-none mt-2 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                      {...register("lName")}
-                     /></div>
+                     />
+                     </div></div>
+                     <div>
+                        {errors.fName && (<p className="text-red-600 text-xs px-1 pt-2 ">{errors.fName?.message}</p>)}
+                     </div>
                      </div>
                     <div>
                         <Input
@@ -78,38 +79,32 @@ function Signup() {
                      type="text"
                      placeholder="Enter your name"
                      className="appearance-none mt-2 relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                     {...register("username",{
-                        required:true
-                     })}
-                     /></div>
+                     {...register("username")}
+                     />
+                     {errors.username && (<p className="text-red-600  text-xs px-1 pt-2 ">{errors.username?.message}</p>)}
+                     </div>
                     
                     <div>
                        <Input 
                      label="Email*"
                      type="email"
                      placeholder="Enter your email"
-                     className="appearance-none mt-2 relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                     {...register("email",{
-                        required:true,
-                        validate:{
-                            matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || "Email Address must be a valid address!",
-                        }
-                     })}
-                     /> 
+                     className="appearance-none mt-1 relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                     {...register("email")}
+                     />
+                     {errors.email && (<p className="text-red-600 text-xs px-1 pt-2 ">{errors.email?.message}</p>)} 
                     </div>
                      <div>
                      <Input
                       label="Password*" 
                       type="password"
                       placeholder="Enter your password"
-                      className="appearance-none mt-2 relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                      { ...register("password",{
-                        required:true,
-                        minLength:8,
-                        maxLength:256
-                      })
+                      className="appearance-none mt-1 relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                      { ...register("password")
                       }
-                      /></div>
+                      />
+                      {errors.password && (<p className="text-red-600 text-xs px-1 pt-2 ">{errors.password?.message}</p>)}
+                      </div>
                       </div>
                      <Button 
                       type="submit"

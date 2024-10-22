@@ -7,6 +7,8 @@ import { useDispatch } from "react-redux";
 import {login as authLogin} from "../store/authSlice.js"
 import { toast, ToastContainer } from "react-toastify";
 import { isEmail } from "../utils/helper.js";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginSchema } from "../validators/authValidator.js";
 
 
 
@@ -14,29 +16,20 @@ function Login() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [error, setError] = useState("");
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, formState:{errors} } = useForm({
+        resolver: zodResolver(loginSchema)
+    });
     
-
+    console.log(errors)
     const login = async(data) => {
         try{
-            console.log("Login::data1",data);
-            
-            if(isEmail(data.username)){
-                data['email']= data.username
-                delete data['username']
-            }
-            console.log("Login::data2",data);
-            
-
-             const response =  await services.login(data);
-             console.log(response);
+            const response =  await services.login(data);
              if(response.status==200){
               dispatch(authLogin(response.data.user))
-             toast.success(response.data.message); // toast not visible to user
-             navigate("/")
+              toast.success(response.data.message,{autoClose:500, onClose:()=>navigate("/")}); // toast not visible to user
         }
         }catch(error){
-            toast.error(error.message)
+            toast.error(error.response?.data?.message || "something went wrong...");
         }
        
     }
@@ -63,10 +56,9 @@ function Login() {
                         type="text"
                         placeholder="Enter email or username"
                         className="appearance-none mt-2 relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                        {...register("username", {
-                            required: true, 
-                        })}
-                    />
+                        {...register("username")}
+                        />
+                        {errors.username && (<p className="text-red-600  text-xs px-1 pt-2 ">{errors.username.message}</p>)}
                         </div>
                         <div>
                              <Input
@@ -79,7 +71,8 @@ function Login() {
                             minLength: 8,
                             maxLength: 256,
                         })}
-                    />
+                        />
+                        {errors.password && (<p className="text-red-600 text-xs px-1 pt-2 ">{errors.password.message}</p>)}
                         </div>
                     </div>
                     

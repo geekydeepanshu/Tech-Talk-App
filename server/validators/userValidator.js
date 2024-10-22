@@ -7,9 +7,7 @@ const registerUserSchema = Joi.object({
         'string.min': 'First name must be at least 2 characters long',
         'string.max': 'First name cannot exceed 30 characters'
     }),
-    last_name: Joi.string().min(2).max(30).required().messages({
-        'string.empty': 'Last name is required',
-        'string.min': 'Last name must be at least 2 characters long',
+    last_name: Joi.string().allow("").max(30).messages({
         'string.max': 'Last name cannot exceed 30 characters'
     }),
     username: Joi.string().min(3).max(30).required().messages({
@@ -29,10 +27,6 @@ const registerUserSchema = Joi.object({
 
 // Schema for user login
 const loginUserSchema = Joi.object({
-    email: Joi.string().email().messages({
-        'string.empty': 'Email is required',
-        'string.email': 'Email must be a valid email address'
-    }),
     username: Joi.string().min(3).max(30).messages({
         'string.min': 'Username must be at least 3 characters long',
         'string.max': 'Username cannot exceed 30 characters'
