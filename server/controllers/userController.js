@@ -27,7 +27,7 @@ const loginUser = asyncHandler(async (req, res) => {
     try {
         // const { username, password } = value;
         const user = await userService.loginUser(value);
-        res.status(200).json({ message: 'Login successful', ...user });
+        res.status(200).json({ message: 'Login successful', user });
     } catch (err) {
         res.status(401).json({ message: err.message });
     }
@@ -50,7 +50,7 @@ const getUserById = asyncHandler(async (req, res) => {
 // Controller for updating user profile
 const updateUser = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    
+
     const { error, value } = updateUserSchema.validate(req.body);
     if (error) {
         return res.status(400).json({ message: error.details[0].message });
@@ -67,6 +67,32 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 });
 
+
+// Controller for bookmarking a post
+const bookmarkPost = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
+    const { postId } = req.params;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Add the postId to the user's bookmarks if not already added
+        if (!user.bookmarks.includes(postId)) {
+            user.bookmarks.push(postId);
+            await user.save();
+            return res.status(200).json({ message: 'Post bookmarked successfully' });
+        } else {
+            return res.status(400).json({ message: 'Post already bookmarked' });
+        }
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
+
 // Controller for deleting a user
 const deleteUser = asyncHandler(async (req, res) => {
     const { id } = req.params;
@@ -81,10 +107,14 @@ const deleteUser = asyncHandler(async (req, res) => {
     }
 });
 
+
+
+
 module.exports = {
     registerUser,
     loginUser,
     getUserById,
     updateUser,
+    bookmarkPost,
     deleteUser
 };

@@ -27,8 +27,8 @@ return(
                  className = "mt-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-md p-2"
                  />
                  <div className="flex gap-5">
-                    <Button className="bg-green-600 text-white w-28 mt-6 px-4 py-2 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500">Update Bio</Button>
-                    <LogoutButton className="bg-green-600 text-white w-28 mt-6 px-4 py-2 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500">Logout</LogoutButton>
+                    <Button className="bg-green-600 text-white w-32 mt-6  rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500">Update Bio</Button>
+                    <LogoutButton className="bg-green-600 text-white w-24  mt-6   rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500">Logout</LogoutButton>
                  </div>
             </div>
 

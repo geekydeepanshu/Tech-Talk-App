@@ -10,9 +10,11 @@ import Layout from "./Layout.jsx";
 import Profile from "./Profile.jsx";
 import SideBarList from "./SideBarList.jsx";
 import PostPreviewCard from "./PostPreviewCard.jsx";
-import HomeX from "./HomeX.jsx";
 import CreatePostForm from "./CreatePostForm.jsx";
 import PostContainer from "./PostContainer.jsx"
+import ProtectedRoute from "./ProtectedRoute.jsx";
+import LandingPage from "./LandingPage.jsx";
 
 
-export {Input, Button, Login, Signup, Navbar, Footer, Home, LogoutButton, Layout, Profile, SideBarList, PostPreviewCard, HomeX, CreatePostForm, PostContainer};
+
+export { Input, Button, Login, Signup, Navbar, Footer, Home, LogoutButton, Layout, Profile, SideBarList, PostPreviewCard, CreatePostForm, PostContainer, ProtectedRoute, LandingPage };

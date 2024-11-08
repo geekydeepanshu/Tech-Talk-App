@@ -1,61 +1,60 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-class Service{
-    
-    async createAccount({fName,lName,username, email, password}){
+class Service {
+
+    async createAccount({ fName, lName, username, email, password }) {
         try {
-           return await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/register`,{
-            first_name:fName,
-            last_name:lName,
-            username,
-            email,
-            password
-           })
+            return await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/register`, {
+                first_name: fName,
+                last_name: lName,
+                username,
+                email,
+                password
+            })
         } catch (error) {
             throw error
         }
     }
-    async login(data){
-        try{
-            return await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/login`,data);
+    async login(data) {
+        try {
+            return await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/login`, data);
 
-        } catch(error) {
+        } catch (error) {
             throw error;
         }
     }
-    async getUser({userId}){
+    async getUser({ userId }) {
         try {
-            return await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/profile`,{
-                headers:{
-                    'Authorization':`Bearer ${token}`
+            return await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/profile`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
             });
         } catch (error) {
             throw error;
         }
     }
-    async logout({}){
+    async logout({ }) {
         try {
             return await axios.get();
         } catch (error) {
             throw error;
         }
     }
-    async createPost(data,token){
-        console.log("CreatePostService::data",data,"\n","token:",token);
-        try{
-            return axios.post(`${import.meta.env.VITE_BACKEND_URL}/posts/createPost`,data,{
-                headers:{
-                    Authorization:`Bearer ${token}`
+    async createPost(data, token) {
+        console.log("CreatePostService::data", data, "\n", "token:", token);
+        try {
+            return axios.post(`${import.meta.env.VITE_BACKEND_URL}/posts/createPost`, data, {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
             });
-        }catch(error)
-        {
+        } catch (error) {
             throw error;
         }
     }
-    async getPosts(){
+    async getPosts() {
         try {
             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/posts`);
             return response.data.posts;
@@ -63,30 +62,32 @@ class Service{
             throw error;
         }
     }
-    async getPost(postId){
-        try{
+    async getPost(postId) {
+        try {
             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/posts/${postId}`);
             return response.data.post;
-        } catch(error) {
+        } catch (error) {
             throw error;
         }
     }
-    async updatePost(){
+    async updatePost() {
         try {
             return await axios.post()
         } catch (error) {
             throw error;
         }
     }
-    async deletePost(){
-        try {
-            return await axios.post()
-        } catch (error) {
-            throw error;
-        }
+    async deletePost(postId, token) {
+
+        return await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/posts/${postId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
     }
-    async uploadFile(file){
-        
+    async uploadFile(file) {
+
         // return await cloudinary.uploader
         // .upload(
         //     file,
@@ -95,14 +96,14 @@ class Service{
         //     console.log(error);
         // });
     }
-    async deleteFile(){
+    async deleteFile() {
         try {
             return await axios.post()
         } catch (error) {
             throw error;
         }
     }
-    async getFilePreview(){
+    async getFilePreview() {
         try {
             return await axios.post()
         } catch (error) {

@@ -18,6 +18,7 @@ router.post('/login', loginUser);
 // Get user by ID (protected route)
 router.get('/:id', protect, getUserById);
 
+
 // Update user by ID (protected route)
 router.put('/:id', protect, updateUser);
 

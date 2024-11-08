@@ -29,6 +29,15 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Password is required'],
         minlength: 6,
     },
+    bio: {
+        type: String,
+    },
+    bookmarks: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post',
+        }
+    ],
 }, {
     timestamps: true, // Automatically add createdAt and updatedAt fields
 });
@@ -38,7 +47,6 @@ userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
         return next();
     }
-
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();

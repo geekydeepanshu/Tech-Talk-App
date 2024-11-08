@@ -1,67 +1,15 @@
-import { useForm } from "react-hook-form";
-import { Input, Button } from "./index";
-import ReactQuill from 'react-quill';
-import services from "../services/services";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createPostSchema } from "../validators/postValidator";
-
-function CreatePostForm() {
-    const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm({
-        resolver: zodResolver(createPostSchema),
-    });
-    const navigate = useNavigate();
-    const user = useSelector((state) => state.auth.userData);
 
 
 
-    const editorContent = watch("content");
-    const onEditorChange = (editorData) => {
-        setValue("content", editorData);
-    }
 
 
-    const uploadHandler = async (imageList) => {
-        const formData = new FormData();
-        formData.append('file', imageList[0]);
-        formData.append('upload_preset', 'preset_image'); // Add your upload preset
-        formData.append('cloud_name', 'ds2tgx0bn'); // Add your cloud name
-
-        try {
-            const response = await axios.post(
-                'https://api.cloudinary.com/v1_1/ds2tgx0bn/image/upload',
-                formData
-            );
-            return (response.data.url); // Get the image URL from the response
-        } catch (error) {
-            console.error("Error uploading the image: ", error);
-        }
-    };
-
-    // console.log("CreatePostForm::data:",data,"\ntype:", typeof data.image[0]);
 
 
-    const onSubmit = async (data) => {
-        // console.log("CreatePostForm::errors",errors);
-        try {
-            let imageUrl = await uploadHandler(data.image);
-            if (imageUrl) {
-                const response = await services.createPost({
-                    title: data.title,
-                    image: imageUrl,
-                    description: data.content,
-                    total_likes: 0,
-                    comments: [],
-                    author: user._id
-                }, user.token)
-                navigate(`/post/${response.data.post._id}`)
-            }
-        } catch (error) {
-            console.error("Error uploading the image: ", error);
-        }
-    }
+function UpdatePost() {
+
+
+
+
     return (
         <div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex items-center justify-center py-10 pt-20">
             <form onSubmit={handleSubmit(onSubmit)}
@@ -115,4 +63,5 @@ function CreatePostForm() {
     )
 }
 
-export default CreatePostForm;
+
+export default UpdatePost;

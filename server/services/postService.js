@@ -15,7 +15,7 @@ const createPost = async (postData) => {
 // Function to get all posts
 const getAllPosts = async () => {
     try {
-        return await Post.find();
+        return await Post.find().populate('author', 'username email');
     } catch (error) {
         throw new Error('Error fetching posts: ' + error.message);
     }
@@ -24,7 +24,7 @@ const getAllPosts = async () => {
 // Function to get a post by ID
 const getPostById = async (postId) => {
     try {
-        const post = await Post.findById(postId);
+        const post = await Post.findById(postId).populate('author', '_id username ');
         if (!post) {
             throw new Error('Post not found');
         }
@@ -46,6 +46,22 @@ const updatePost = async (postId, updateData) => {
         throw new Error('Error updating post: ' + error.message);
     }
 };
+
+
+// Function to add comment on post 
+const addComment = async (postId, comment) => {
+    try {
+        const addComment = await Post.updateOne({ _id: postId },
+            {
+                $set: {
+
+                }
+            })
+    } catch (error) {
+        throw new Error('Error adding comment: ' + error.message)
+    }
+}
+
 
 // Function to delete a post
 const deletePost = async (postId) => {

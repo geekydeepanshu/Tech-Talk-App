@@ -28,9 +28,9 @@ const registerUser = async ({first_name,last_name,username,email,password}) => {
     const savedUser = await user.save();
     // Return user data along with generated token
     return {
-        user_id:savedUser._id,
-        first_name:savedUser.first_name,
-        last_name:savedUser.last_name,
+        _id:savedUser._id,
+        fName:savedUser.first_name,
+        lName:savedUser.last_name,
         username:savedUser.username,
         email:savedUser.email,
         token: generateToken(savedUser._id), // Generate JWT token
@@ -39,11 +39,18 @@ const registerUser = async ({first_name,last_name,username,email,password}) => {
 
 // Login a user
 const loginUser = asyncHandler(async ({username, password}) => {
-    const user = await User.findOne({ $or: [{ email: username }, { username: username }] });
+    const  user = await User.findOne({ $or: [{ email: username }, { username: username }] });
     if (user && (await bcrypt.compare(password, user.password))) {
         // Generate a JWT token
         const token = generateToken(user._id);
-        return { user, token };
+        return { 
+            _id:user._id,
+            fName:user.first_name,
+            lName:user.last_name,
+            username:user.username,
+            email:user.email,
+            token
+        } ;
     } else {
         throw new Error('Invalid email or password');
     }

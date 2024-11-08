@@ -1,5 +1,6 @@
 import {Link } from "react-router-dom";
 import parse from "html-react-parser";
+import { timeSince } from "../utils/helper";
 
 
 function PostPreviewCard(
@@ -24,12 +25,12 @@ return(
                          className="w-full h-full object-cover" 
                          alt="profile-image"/>
                     </div>
-                    <p className="text-gray-700 dark:text-gray-300 text-sm">{author}</p>
+                    <p className="text-gray-700 dark:text-gray-300 text-sm ">{author}</p>
             </div>
             <div className="flex flex-row items-start gap-6 md:gap-8">
                 <div className="flex-1">
                     <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">{title}</h1>
-                    <p className="text-gray-700 dark:text-gray-400 mb-4 font-semibold line-clamp-3">{
+                    <p className="text-gray-700 dark:text-gray-400 mb-4 font-medium line-clamp-3">{
                     parse(content)
                     }</p>
                 </div>
@@ -43,7 +44,7 @@ return(
             </div>
             <div className="flex justify-between items-center mt-4 text-gray-600 dark:text-gray-400 text-sm">
                 <div>
-                    {createdAt}
+                {`${timeSince(createdAt)} ago`}
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1"></div>

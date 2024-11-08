@@ -1,6 +1,7 @@
 // postController.js
 
 const postService = require('../services/postService');
+const userService = require('../services/userService');
 const asyncHandler = require('express-async-handler');
 const postValidator = require('../validators/postValidator');
 
@@ -48,7 +49,7 @@ const getPostById = asyncHandler(async (req, res) => {
 // Controller for updating a post
 const updatePost = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    
+
     // Validate request body using Joi
     const { error, value } = postValidator.validate(req.body);
     if (error) {
@@ -65,6 +66,11 @@ const updatePost = asyncHandler(async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 });
+
+
+
+
+
 
 // Controller for deleting a post
 const deletePost = asyncHandler(async (req, res) => {
