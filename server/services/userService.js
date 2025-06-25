@@ -4,13 +4,13 @@ const asyncHandler = require('express-async-handler');
 const generateToken = require('../utils/generateToken');
 
 // Register a new user
-const registerUser = async ({first_name,last_name,username,email,password}) => {
+const registerUser = async ({ first_name, last_name, username, email, password }) => {
     // Check if user already exists
-    const isUserEmailExists = await User.findOne({email});
+    const isUserEmailExists = await User.findOne({ email });
     if (isUserEmailExists) {
         throw new Error('User Email already exists');
     }
-    const isUsernameExists = await User.findOne({username});
+    const isUsernameExists = await User.findOne({ username });
     if (isUsernameExists) {
         throw new Error('Username already exists');
     }
@@ -21,36 +21,37 @@ const registerUser = async ({first_name,last_name,username,email,password}) => {
         last_name,
         username,
         email,
-        password
+        password,
     });
 
     // Save the user
     const savedUser = await user.save();
     // Return user data along with generated token
     return {
-        _id:savedUser._id,
-        fName:savedUser.first_name,
-        lName:savedUser.last_name,
-        username:savedUser.username,
-        email:savedUser.email,
+        _id: savedUser._id,
+        fName: savedUser.first_name,
+        lName: savedUser.last_name,
+        username: savedUser.username,
+        email: savedUser.email,
         token: generateToken(savedUser._id), // Generate JWT token
     };
 };
 
 // Login a user
-const loginUser = asyncHandler(async ({username, password}) => {
-    const  user = await User.findOne({ $or: [{ email: username }, { username: username }] });
+const loginUser = asyncHandler(async ({ username, password }) => {
+    const user = await User.findOne({ $or: [{ email: username }, { username: username }] });
     if (user && (await bcrypt.compare(password, user.password))) {
         // Generate a JWT token
         const token = generateToken(user._id);
-        return { 
-            _id:user._id,
-            fName:user.first_name,
-            lName:user.last_name,
-            username:user.username,
-            email:user.email,
-            token
-        } ;
+        return {
+            _id: user._id,
+            fName: user.first_name,
+            lName: user.last_name,
+            username: user.username,
+            email: user.email,
+            token,
+            bio: user.bio,
+        };
     } else {
         throw new Error('Invalid email or password');
     }
@@ -111,11 +112,23 @@ const deleteUser = asyncHandler(async (userId) => {
     return user;
 });
 
+// update user bio 
+const updateUserBio = asyncHandler(async (userId, bio) => {
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new Error('User not found');
+    }
+    user.bio = bio;
+    const updatedUser = await user.save();
+    return { _id: updatedUser._id, bio: updatedUser.bio, };
+});
+
 module.exports = {
     registerUser,
     loginUser,
     getUserById,
     getAllUsers,
     updateUser,
+    updateUserBio,
     deleteUser
 };

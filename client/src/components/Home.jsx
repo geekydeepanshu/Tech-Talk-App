@@ -107,7 +107,7 @@ function Home() {
                 </div>
                 {
                     posts && posts.map((post) => (
-                        <PostPreviewCard id={post._id} author={post.author.username} content={post.description} title={post.title} createdAt={post.createdAt} commentsCount={post.comments.length} featuredImage={post.image} />
+                        <PostPreviewCard id={post._id} author={post.author?.username} content={post.description} title={post.title} createdAt={post.createdAt} commentsCount={post.comments.length} featuredImage={post.image} />
                     ))
                 }
             </div>

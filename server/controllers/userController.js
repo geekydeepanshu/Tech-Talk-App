@@ -67,6 +67,23 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 });
 
+// Controller for updating user bio
+const updateUserBio = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { bio } = req.body;
+    try {
+        const updatedUser = await userService.updateUserBio(id, bio);
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'User bio updated successfully', bio: updateUser.bio });
+    }
+    catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
+
 
 // Controller for bookmarking a post
 const bookmarkPost = asyncHandler(async (req, res) => {
@@ -115,6 +132,7 @@ module.exports = {
     loginUser,
     getUserById,
     updateUser,
+    updateUserBio,
     bookmarkPost,
     deleteUser
 };

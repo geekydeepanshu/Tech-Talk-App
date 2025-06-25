@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 class Service {
 
@@ -108,6 +109,15 @@ class Service {
             return await axios.post()
         } catch (error) {
             throw error;
+        }
+    }
+    async updateUserBio({ userId, bio }, { rejectWithValue }) {
+        try {
+            const response = await axios.patch(`/api/users/${userId}/bio`, { bio });
+            return response.data;
+        }
+        catch (error) {
+            return rejectWithValue(error.response.data);
         }
     }
 }

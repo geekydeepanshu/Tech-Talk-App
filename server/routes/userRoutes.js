@@ -4,6 +4,7 @@ const {
     loginUser,
     getUserById,
     updateUser,
+    updateUserBio,
     deleteUser
 } = require('../controllers/userController');
 const { protect } = require('../middleware/authMiddleware');
@@ -21,6 +22,9 @@ router.get('/:id', protect, getUserById);
 
 // Update user by ID (protected route)
 router.put('/:id', protect, updateUser);
+
+// Update a user Bio
+router.patch('/:id/bio', protect, updateUserBio);
 
 // Delete user by ID (protected route)
 router.delete('/:id', protect, deleteUser);
